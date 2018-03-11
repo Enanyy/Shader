@@ -5,9 +5,10 @@
 
 //在片元着色器计算高光反射模型
 //
-Shader "Custom/SpeculerPixelLevel" {
+Shader "Custom/SimpleTextureLevel" {
 	Properties{
-		_Diffuse("Color", Color) = (1,1,1,1)
+		_Color("Color Tint",Color) = (1,1,1,1)
+		_MainTex("Main Tex", 2D) = "white" {}
 		_Speculer("Speculer",Color) = (1,1,1,1)
 		_Gloss ("Gloss", Range(4.0, 256)) = 20
 
@@ -22,7 +23,9 @@ Shader "Custom/SpeculerPixelLevel" {
 
 				#include "Lighting.cginc"	//包含内置光照文件
 
-				fixed4 _Diffuse;			//声明访问属性的变量
+				fixed4 _Color;				//声明访问属性的变量
+				sampler2D _MainTex;			//声明访问属性的变量
+				float4 _MainTex_ST;			//声明访问属性的变量
 				fixed4 _Speculer;			//声明访问属性的变量
 				float _Gloss;				//声明访问属性的变量
 
@@ -32,6 +35,8 @@ Shader "Custom/SpeculerPixelLevel" {
 					float4 vertex:POSITION;
 					//顶点法线
 					float3 normal:NORMAL;
+
+					float4 texcoord:TEXCOORD0;
 				};
 
 				struct v2f {
@@ -42,6 +47,8 @@ Shader "Custom/SpeculerPixelLevel" {
 					float3 worldNormal:TEXCOORD0;
 					//顶点在世界空间下的坐标
 					float3 worldPos	:TEXCOORD1;
+
+					float2 uv:TEXCOORD2;
 				};
 
 				v2f vert(a2v v)
@@ -56,20 +63,25 @@ Shader "Custom/SpeculerPixelLevel" {
 					//顶点在世界空间下的坐标
 					o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 
+					o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
+
 					return o;
 				}
 
 				fixed4 frag(v2f i) :SV_Target
 				{
-					fixed3 worldNormal = normalize(i.worldNormal);
+					fixed3 albedo = tex2D(_MainTex, i.uv).rgb * _Color.rgb;
 
 					//环境光颜色
-					fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;
+					fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;
+
+					fixed3 worldNormal = normalize(i.worldNormal);
+
 
 					//世界空间坐标的光线方向，归一化
 					fixed3 worldLight = normalize(_WorldSpaceLightPos0.xyz);
 					//计算漫反射，公式：diffuse = (入射光 * 漫反射系数) * max(0, dot(法线(世界空间), 光源方向(世界空间)))
-					fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * saturate(dot(worldNormal, worldLight));
+					fixed3 diffuse = _LightColor0.rgb * albedo * saturate(dot(worldNormal, worldLight));
 
 
 					//世界光在该法线上的反射方向
