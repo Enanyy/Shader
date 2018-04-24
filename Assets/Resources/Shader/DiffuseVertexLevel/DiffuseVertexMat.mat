@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: DiffuseVertexMat
-  m_Shader: {fileID: 4800000, guid: 63212a1fc76183240bd1c32ea7f6921c, type: 3}
+  m_Shader: {fileID: 4800000, guid: d9da58254e5e2dc4799cc2d13d6d25b3, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0

@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: SpeculerPixelMat
-  m_Shader: {fileID: 4800000, guid: c96c93fea56df2b4f9563122b8666a88, type: 3}
+  m_Shader: {fileID: 4800000, guid: 54608617716ec05409b784ce0f87eb6a, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
