@@ -33,7 +33,8 @@ Shader "Custom/Flow" {
 			{
 				float4 pos:SV_POSITION;
 				float2 uv:TEXCOORD0;
-				float3 worldPos:TEXCOORD1;
+				float2 uv1:TEXCOORD1;
+				
 			};
 
 			fixed4 _Color;
@@ -42,6 +43,8 @@ Shader "Custom/Flow" {
 			float4 _MainTex_ST;
 
 			sampler2D _FlowTex;
+			float4 _FlowTex_ST;
+
 
 			float _SpeedX;
 			float _SpeedY;
@@ -52,7 +55,8 @@ Shader "Custom/Flow" {
 				v2f o;
 				o.pos = UnityObjectToClipPos(v.vertex);
 				o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
-				o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+				o.uv1 = TRANSFORM_TEX(v.texcoord, _FlowTex);
+			
 
 				return o;
 			}
@@ -61,13 +65,11 @@ Shader "Custom/Flow" {
 			{
 				fixed4 color = tex2D(_MainTex, i.uv);
 				
-				fixed2 uv = i.worldPos.xy + float2(_SpeedX, _SpeedY) * _Time.y;
+				float2 offset = fixed2(_SpeedX, _SpeedY) * _Time.y;
 				
-				uv.x = uv.x > 1 ? uv.x - 1 : uv.x;
-				uv.y = uv.y > 1 ? uv.y - 1 : uv.y;
-
-				fixed4 flow = tex2D(_FlowTex, uv) * _Factor;
 				
+				fixed4 flow = tex2D(_FlowTex, i.uv1 + offset) * _Factor;
+		
 				color.rgb += flow.rgb * _Color.rgb;
 
 

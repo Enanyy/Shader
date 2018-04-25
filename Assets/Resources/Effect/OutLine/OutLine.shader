@@ -64,7 +64,9 @@ Shader "Custom/OutLine" {
 				
 				fixed3 worldNormal = normalize(i.worldNormal);
 				fixed3 worldViewDir = normalize(i.worldViewDir);
-				//计算边缘强度
+				//计算边缘强度, worldNormal, worldViewDir夹角越大，
+				//dot(worldNormal, worldViewDir)越小，
+				//即成反比，用1-dot(worldNormal, worldViewDir)把边缘强度转成与夹角成正比
 				float rim = 1 - max(0, dot(worldNormal, worldViewDir));
 				//color.rgb *= _Color.rgb;// *pow(rim, 1 / _Glossiness);
 				//color.rgb += _Color.rgb * smoothstep(1 - _Glossiness, 1.0, rim);
