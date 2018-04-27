@@ -9,7 +9,7 @@
 	}
 	SubShader
 	{
-		Tags { "RenderType"="Opaque" }
+		Tags { "RenderType"="Transparent" }
 		LOD 100
 
 		Pass
@@ -62,7 +62,9 @@
 
 				if (distance > _Radius) {
 
-					 col = tex2D(_MainTex, i.uv);
+					float2 dv =normalize( float2(0.5, 0.5) - i.uv );
+
+					col = tex2D(_MainTex, i.uv + dv *_Radius);
 				}
 				else
 				{

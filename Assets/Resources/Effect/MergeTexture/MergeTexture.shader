@@ -5,7 +5,9 @@ Shader "Custom/MergeTexture" {
 	Properties {
 		_Color("Color", Color) = (1,1,1,1)
 		_MainTex("Albedo (RGB)", 2D) = "white" {}
-		_Rect("Rect",Vector) = (0,0,0,0)//一个四维向量
+		//一个四维向量,xy存储图片的起始坐标，zw存储图片的长宽
+		//这些值可以写个脚本类似NGUI的UISprite选择一个图片，然后根据图片设置
+		_Rect("Rect",Vector) = (0,0,0,0)
 
 	
 	}
@@ -53,7 +55,8 @@ Shader "Custom/MergeTexture" {
 			fixed4 frag(v2f i):SV_Target
 			{
 				float2 uv = float2( _Rect.x *_MainTex_TexelSize.x + _Rect.z*_MainTex_TexelSize.x * i.uv.x,
-								    1-_Rect.y *_MainTex_TexelSize.y - _Rect.w*_MainTex_TexelSize.y * i.uv.y);
+									//y轴调换一下
+								    1 - (_Rect.y *_MainTex_TexelSize.y + _Rect.w*_MainTex_TexelSize.y * i.uv.y));
 				fixed4 color = tex2D(_MainTex, uv);
 				
 
