@@ -1,0 +1,28 @@
+{"frames": {
+
+"ui_fb0007_02.png":
+{
+	"frame": {"x":251,"y":0,"w":249,"h":264},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":2,"w":249,"h":264},
+	"sourceSize": {"w":253,"h":268}
+},
+"ui_fb0008_01.png":
+{
+	"frame": {"x":0,"y":0,"w":249,"h":264},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":2,"w":249,"h":264},
+	"sourceSize": {"w":253,"h":268}
+}},
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "MergeTexture.png",
+	"format": "RGBA8888",
+	"size": {"w":512,"h":512},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:8c739420abebeef476021343ef233801$"
+}
+}
