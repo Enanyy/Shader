@@ -7,7 +7,7 @@ Shader "Custom/MergeTexture" {
 		_MainTex("Albedo (RGB)", 2D) = "white" {}
 		//一个四维向量,xy存储图片的起始坐标，zw存储图片的长宽
 		//这些值可以写个脚本类似NGUI的UISprite选择一个图片，然后根据图片设置
-		_Rect("Rect",Vector) = (0,0,0,0)
+		//_Rect("Rect",Vector) = (0,0,0,0)
 
 	
 	}
@@ -48,7 +48,10 @@ Shader "Custom/MergeTexture" {
 				v2f o;
 				o.pos = UnityObjectToClipPos(v.vertex);
 				o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
-				
+#if UNITY_UV_STARTS_AT_TOP  
+				if (_MainTex_TexelSize.y < 0)
+					o.uv.y = 1 - o.uv.y;
+#endif   
 				return o;
 			}
 
